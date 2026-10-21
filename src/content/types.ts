@@ -13,7 +13,7 @@
  *    This file's values ship to the browser.
  *  - Images: real files only, in `public/images/`, referenced as `/images/<file>`.
  *    No AI-generated or stock photos of the food or the restaurant.
- *  - No pitch features (text pre-orders, AI phone answering, catering, waitlists, "coming soon").
+ *  - No pitch features (text pre-orders, AI phone answering, catering, waitlists, teaser cards).
  *    The types carry no fields for them.
  */
 
