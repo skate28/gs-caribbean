@@ -30,3 +30,11 @@ export function orderingLinks(content: SiteContent): OrderingLink[] {
 export function deliveryNote(content: SiteContent): string {
   return content.deliveryNote?.trim() ?? "";
 }
+
+/** Ordering links worth a button: drops a phone link that just repeats the main call button. */
+export function orderButtons(content: SiteContent): OrderingLink[] {
+  const main = content.phone.tel.replace(/\D/g, "");
+  return orderingLinks(content).filter(
+    (link) => !(link.platform === "phone" && link.url.replace(/\D/g, "") === main),
+  );
+}

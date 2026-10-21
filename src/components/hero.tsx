@@ -3,11 +3,11 @@ import { ArrowDown, MapPin, Phone } from "lucide-react";
 
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
-import { heroImages, sections } from "@/lib/content";
+import { heroImages, logo, sections } from "@/lib/content";
 import { hoursConfirmed } from "@/lib/hours";
 import { directionsHref } from "@/lib/maps";
 import { signatureDishes } from "@/lib/menu";
-import { orderingLinks } from "@/lib/ordering";
+import { orderButtons } from "@/lib/ordering";
 
 import { FlagStripe } from "./flag-stripe";
 import { HeroArt } from "./hero-art";
@@ -26,7 +26,7 @@ function titleParts(name: string): { lead: string; tail: string } {
 
 export function Hero() {
   const photos = heroImages(site);
-  const links = orderingLinks(site);
+  const links = orderButtons(site);
   const dishes = signatureDishes(site).slice(0, 4);
   const { lead, tail } = titleParts(site.name);
   const directions = directionsHref(site);
@@ -34,16 +34,11 @@ export function Hero() {
   const tagline = site.tagline.trim();
   const hasPhotos = photos.length > 0;
   const hasMenu = sections(site).menu;
+  const logoImage = logo(site);
 
   return (
     <section id="top" className="grain relative isolate overflow-hidden bg-ink text-white">
       <div aria-hidden className="bg-weave absolute inset-0 -z-10" />
-      {hasPhotos ? (
-        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[78vh] max-h-[46rem] lg:hidden">
-          <Image src={photos[0].src} alt="" fill priority sizes="100vw" className="kenburns object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/80 to-ink" />
-        </div>
-      ) : null}
       <div
         aria-hidden
         className="absolute -right-40 -top-40 -z-10 size-[42rem] rounded-full bg-[radial-gradient(closest-side,rgb(255_106_31/0.45),rgb(225_38_45/0.18)_55%,transparent)] blur-2xl"
@@ -53,7 +48,13 @@ export function Hero() {
         className="absolute -bottom-56 -left-40 -z-10 size-[38rem] rounded-full bg-[radial-gradient(closest-side,rgb(18_57_181/0.5),transparent)] blur-2xl"
       />
 
-      <div className={cn(container, "grid items-center gap-12 pb-16 pt-28 sm:pt-32 lg:grid-cols-[1.12fr_0.88fr] lg:gap-10 lg:pb-24 lg:pt-36")}>
+      <div
+        className={cn(
+          container,
+          "grid items-center pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:pb-24 lg:pt-36",
+          hasPhotos ? "gap-10 pt-24 sm:pt-28" : "gap-12 pt-28 sm:pt-32",
+        )}
+      >
         <div className="relative">
           {kickerText ? (
             <Reveal>
@@ -146,23 +147,51 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.12} className={cn("relative mx-auto w-full max-w-[26rem] sm:max-w-md lg:block lg:max-w-none", hasPhotos && photos.length < 2 && "hidden")}>
+        <Reveal
+          delay={0.05}
+          className={cn(
+            "relative mx-auto w-full lg:max-w-none",
+            hasPhotos ? "order-first max-w-xl lg:order-none" : "max-w-[26rem] sm:max-w-md",
+          )}
+        >
           <div className="relative">
             <div
               aria-hidden
               className="absolute -inset-4 rounded-t-[999px] rounded-b-[2.5rem] bg-gradient-to-b from-gold/40 via-red/30 to-blue/40 blur-2xl"
             />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[2.25rem] border border-white/15 bg-char shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)]">
+            <div
+              className={cn(
+                "relative overflow-hidden border border-white/15 bg-char shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)]",
+                hasPhotos
+                  ? "aspect-[4/3.4] rounded-t-[11rem] rounded-b-[2rem] sm:aspect-[1/1] sm:rounded-t-[16rem] lg:aspect-[5/6] lg:rounded-t-[999px] lg:rounded-b-[2.5rem]"
+                  : "aspect-[4/5] rounded-t-[999px] rounded-b-[2.25rem]",
+              )}
+            >
               {hasPhotos ? (
                 <>
                   <HeroPhotos images={photos} />
-                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-tr from-red/35 via-transparent to-gold/25 mix-blend-soft-light" />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/5 to-transparent" />
                 </>
               ) : (
                 <HeroArt className="absolute inset-0 size-full" />
               )}
             </div>
-            <SpinBadge className="absolute -bottom-6 -left-4 size-28 sm:-left-8 sm:size-32" />
+            {logoImage ? (
+              <div className="absolute -bottom-7 -left-2 size-28 rounded-full bg-ink p-1.5 shadow-[0_20px_40px_-12px_rgb(0_0_0/0.8)] sm:-left-6 sm:size-36 lg:size-40">
+                <Image
+                  src={logoImage.src}
+                  alt={logoImage.alt}
+                  width={logoImage.width ?? 800}
+                  height={logoImage.height ?? 800}
+                  sizes="160px"
+                  className="size-full rounded-full object-contain ring-2 ring-gold/70"
+                />
+              </div>
+            ) : (
+              <SpinBadge className="absolute -bottom-6 -left-4 size-28 sm:-left-8 sm:size-32" />
+            )}
+            {logoImage ? <SpinBadge className="absolute -right-2 -top-4 hidden size-24 sm:block lg:-right-5 lg:size-28" /> : null}
           </div>
         </Reveal>
       </div>

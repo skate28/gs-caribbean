@@ -83,7 +83,8 @@ export function dayHours(hours: Hours, weekday: Weekday | null): DayHours | null
 }
 
 function windowLabel(day: DayHours | null): string | null {
-  if (!day || day.closed || !day.openTime || !day.closeTime) return null;
+  if (!day || day.closed || !day.openTime) return null;
+  if (!day.closeTime) return parseMinutes(day.openTime) == null ? null : `From ${formatClock(day.openTime)}`;
   return formatWindow(day.openTime, day.closeTime);
 }
 
@@ -172,7 +173,9 @@ export function scheduleRows(hours: Hours): ScheduleRow[] {
       ? "closed"
       : day?.openTime && day.closeTime
         ? `${day.openTime}|${day.closeTime}`
-        : "unknown";
+        : day?.openTime && parseMinutes(day.openTime) != null
+          ? `from|${day.openTime}`
+          : "unknown";
     const previous = groups[groups.length - 1];
     if (previous && previous.signature === signature) previous.days.push(weekday);
     else groups.push({ days: [weekday], signature });
@@ -185,7 +188,11 @@ export function scheduleRows(hours: Hours): ScheduleRow[] {
       const last = DAY_LABEL[group.days[group.days.length - 1]];
       const label = group.days.length === 1 ? first : `${first}–${last}`;
       const value =
-        group.signature === "closed" ? "Closed" : formatWindow(...(group.signature.split("|") as [string, string]));
+        group.signature === "closed"
+          ? "Closed"
+          : group.signature.startsWith("from|")
+            ? `From ${formatClock(group.signature.slice(5))}`
+            : formatWindow(...(group.signature.split("|") as [string, string]));
       return { label, value, days: group.days };
     });
 }
@@ -228,7 +235,8 @@ export function weekdayKey(date: Date, timeZone: string): Weekday | null {
   }
 }
 
-export type StatusTone = "open" | "closed" | "neutral";
+/** "info" = a known opening time with no published close, e.g. "Open today from 11 AM". */
+export type StatusTone = "open" | "closed" | "neutral" | "info";
 
 /** Static hours line used before the live clock runs. Prefers `hours.summary`. Empty string when hours are unknown (callers hide it). */
 export function hoursFallback(hours: Hours): string {
@@ -252,6 +260,21 @@ export function statusLabel(now: Date, input: ShopClockInput): { label: string; 
   if (status.isOpen === false) {
     const next = nextOpeningLabel(now, input.hours);
     return { label: next ? `Closed now · ${next}` : "Closed now", tone: "closed" };
+  }
+
+  // Today has an opening time but no published close: say when it opens, never guess open/closed.
+  try {
+    const zoned = zonedParts(now, input.hours.timezone.trim() || "America/New_York");
+    const today = dayHours(input.hours, zoned.weekday);
+    const open = parseMinutes(today?.openTime);
+    if (today && !today.closed && today.openTime && !today.closeTime && open != null) {
+      const time = formatClock(today.openTime);
+      return zoned.minutes < open
+        ? { label: `Opens today at ${time}`, tone: "info" }
+        : { label: `Open today from ${time}`, tone: "info" };
+    }
+  } catch {
+    // fall through to the static line
   }
 
   return { label: hoursFallback(input.hours), tone: "neutral" };

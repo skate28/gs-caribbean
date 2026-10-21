@@ -6,12 +6,24 @@ export function validImage(image: SiteImage | null | undefined): image is SiteIm
   return Boolean(image && typeof image.src === "string" && image.src.trim().startsWith("/") && image.alt?.trim());
 }
 
-export function heroImages(content: SiteContent): SiteImage[] {
-  return (content.heroImages ?? []).filter(validImage).slice(0, 3);
+/** Photos of a printed menu board are reference material, not dish photography. */
+function isMenuBoard(image: SiteImage): boolean {
+  return /menu-board/i.test(image.src);
 }
 
+export function heroImages(content: SiteContent): SiteImage[] {
+  return (content.heroImages ?? []).filter(validImage).filter((img) => !isMenuBoard(img)).slice(0, 3);
+}
+
+/** Gallery photos minus menu boards and the photo already shown in About. */
 export function galleryImages(content: SiteContent): SiteImage[] {
-  return (content.gallery ?? []).filter(validImage);
+  const aboutSrc = validImage(content.about?.image) ? content.about.image.src : null;
+  const seen = new Set<string>();
+  return (content.gallery ?? []).filter(validImage).filter((img) => {
+    if (isMenuBoard(img) || img.src === aboutSrc || seen.has(img.src)) return false;
+    seen.add(img.src);
+    return true;
+  });
 }
 
 export function logo(content: SiteContent): SiteImage | null {

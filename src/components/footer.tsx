@@ -24,7 +24,7 @@ export function Footer({ links }: { links: NavLink[] }) {
       <FlagStripe />
       <div className={cn(container, "grid gap-10 pt-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]")}>
         <div>
-          <Wordmark />
+          <Wordmark size="lg" />
           {site.tagline.trim() ? <p className="mt-5 max-w-sm text-white/65">{site.tagline}</p> : null}
         </div>
         <div className="space-y-2 text-white/75">

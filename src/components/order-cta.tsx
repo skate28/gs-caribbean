@@ -2,7 +2,7 @@ import { Phone, Truck } from "lucide-react";
 
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
-import { deliveryNote, orderingLinks } from "@/lib/ordering";
+import { deliveryNote, orderButtons } from "@/lib/ordering";
 
 import { OrderButton } from "./order-button";
 import { Reveal } from "./reveal";
@@ -10,7 +10,7 @@ import { container, kicker } from "./styles";
 
 export function OrderCta() {
   if (!site.phone.tel) return null;
-  const links = orderingLinks(site);
+  const links = orderButtons(site);
   const delivery = deliveryNote(site);
 
   return (
@@ -25,7 +25,7 @@ export function OrderCta() {
         <Reveal>
           <p className={cn(kicker, "justify-center text-white/85")}>
             <span aria-hidden className="h-0.5 w-8 rounded-full bg-gold" />
-            {links.length > 0 ? "Call or order online" : "Call ahead"}
+            {links.length > 0 ? "Call or order online" : delivery ? "Call for pickup or delivery" : "Call ahead"}
             <span aria-hidden className="h-0.5 w-8 rounded-full bg-gold" />
           </p>
           <h2 id="order-title" className="mx-auto mt-5 max-w-4xl font-display text-[clamp(2.6rem,9vw,6.5rem)] font-extrabold leading-[0.88] tracking-[-0.045em] text-balance">

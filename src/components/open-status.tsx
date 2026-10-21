@@ -37,6 +37,7 @@ export function OpenStatus({
         "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold",
         state.tone === "open" && (light ? "bg-palm/10 text-palm" : "bg-palm/20 text-[#7ee2a8]"),
         state.tone === "closed" && (light ? "bg-red/10 text-red-deep" : "bg-red/20 text-[#ff9a9e]"),
+        state.tone === "info" && (light ? "bg-gold/15 text-ink" : "bg-gold/15 text-gold"),
         state.tone === "neutral" && (light ? "bg-ink/5 text-ink/70" : "bg-white/10 text-white/80"),
         className,
       )}
