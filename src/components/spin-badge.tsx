@@ -7,8 +7,10 @@ export function SpinBadge({ className }: { className?: string }) {
           <defs>
             <path id="badge-circle" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0" />
           </defs>
-          <text className="fill-ink font-sans text-[10.5px] font-extrabold uppercase tracking-[0.2em]">
-            <textPath href="#badge-circle">Bon gou · Manje lakay · Bon gou · Manje lakay ·</textPath>
+          <text className="fill-ink font-sans text-[11px] font-extrabold uppercase">
+            <textPath href="#badge-circle" textLength="272" lengthAdjust="spacing">
+              Bon gou ✦ Manje lakay ✦ Bon gou ✦ Lakay ✦
+            </textPath>
           </text>
         </svg>
         <div className="absolute inset-[30%] grid place-items-center rounded-full bg-red text-white">

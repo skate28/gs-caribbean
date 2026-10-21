@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowDown, MapPin, Phone } from "lucide-react";
 
 import { site } from "@/content";
@@ -37,6 +38,12 @@ export function Hero() {
   return (
     <section id="top" className="grain relative isolate overflow-hidden bg-ink text-white">
       <div aria-hidden className="bg-weave absolute inset-0 -z-10" />
+      {hasPhotos ? (
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[78vh] max-h-[46rem] lg:hidden">
+          <Image src={photos[0].src} alt="" fill priority sizes="100vw" className="kenburns object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/80 to-ink" />
+        </div>
+      ) : null}
       <div
         aria-hidden
         className="absolute -right-40 -top-40 -z-10 size-[42rem] rounded-full bg-[radial-gradient(closest-side,rgb(255_106_31/0.45),rgb(225_38_45/0.18)_55%,transparent)] blur-2xl"
@@ -139,7 +146,7 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.12} className="relative mx-auto w-full max-w-[26rem] sm:max-w-md lg:max-w-none">
+        <Reveal delay={0.12} className={cn("relative mx-auto w-full max-w-[26rem] sm:max-w-md lg:block lg:max-w-none", hasPhotos && photos.length < 2 && "hidden")}>
           <div className="relative">
             <div
               aria-hidden

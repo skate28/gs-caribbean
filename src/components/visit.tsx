@@ -71,7 +71,8 @@ export function Visit() {
                   </p>
                   <OpenStatus
                     input={{ hours: site.hours, closedNotice: site.closedNotice, phone: site.phone }}
-                    className="bg-ink text-white"
+                    surface="light"
+                    hideNeutral
                   />
                 </div>
                 {rows.length > 0 ? (
