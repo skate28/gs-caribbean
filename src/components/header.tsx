@@ -12,9 +12,10 @@ type HeaderProps = {
   links: NavLink[];
   phone: { display: string; tel: string };
   wordmark: React.ReactNode;
+  siteName: string;
 };
 
-export function Header({ links, phone, wordmark }: HeaderProps) {
+export function Header({ links, phone, wordmark, siteName }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export function Header({ links, phone, wordmark }: HeaderProps) {
       )}
     >
       <div className={cn(container, "flex h-[4.25rem] items-center justify-between gap-4 sm:h-20")}>
-        <a href="#top" className={cn("rounded-xl", focusRing)} aria-label="Back to top">
+        <a href="#top" className={cn("rounded-xl", focusRing)} aria-label={`${siteName}, back to top`}>
           {wordmark}
         </a>
         {links.length > 0 ? (

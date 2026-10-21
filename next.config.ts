@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 import { allowIndexing } from "./src/lib/indexing";
 
 const nextConfig: NextConfig = {
+  images: { qualities: [75, 90] },
   async headers() {
     if (allowIndexing()) return [];
     return [

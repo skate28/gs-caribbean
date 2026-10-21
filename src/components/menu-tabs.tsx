@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useId, useRef, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import type { MenuItem } from "@/content/types";
 import { cn } from "@/lib/cn";
@@ -91,6 +92,22 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
   const reduce = useReducedMotion();
   const base = useId();
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  const updateEdges = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const left = el.scrollLeft > 4;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 4;
+    setEdges((prev) => (prev.left === left && prev.right === right ? prev : { left, right }));
+  }, []);
+
+  useEffect(() => {
+    updateEdges();
+    window.addEventListener("resize", updateEdges);
+    return () => window.removeEventListener("resize", updateEdges);
+  }, [updateEdges]);
   const current = Math.min(active, categories.length - 1);
 
   const select = (i: number) => {
@@ -112,11 +129,14 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
     <div>
       {categories.length > 1 ? (
         <div className="sticky top-[4.25rem] z-20 -mx-5 bg-ink/90 px-5 py-3 backdrop-blur-xl sm:top-20 sm:mx-0 sm:rounded-full sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
+          <div className="relative sm:inline-flex sm:max-w-full">
           <div
+            ref={scrollerRef}
             role="tablist"
             aria-label="Menu categories"
             onKeyDown={onKey}
-            className="no-scrollbar flex gap-1 overflow-x-auto rounded-full border border-white/10 bg-char p-1.5 sm:inline-flex sm:max-w-full"
+            onScroll={updateEdges}
+            className="no-scrollbar flex gap-1 overflow-x-auto scroll-smooth rounded-full border border-white/10 bg-char p-1.5 motion-reduce:scroll-auto sm:inline-flex sm:max-w-full"
           >
             {categories.map((c, i) => {
               const selected = i === active;
@@ -132,7 +152,10 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
                   aria-selected={selected}
                   aria-controls={`${base}-panel-${i}`}
                   tabIndex={selected ? 0 : -1}
-                  onClick={() => setActive(i)}
+                  onClick={() => {
+                    setActive(i);
+                    tabRefs.current[i]?.scrollIntoView({ block: "nearest", inline: "center", behavior: reduce ? "auto" : "smooth" });
+                  }}
                   className={cn(
                     "relative shrink-0 cursor-pointer whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-bold transition sm:px-5",
                     selected ? "text-white" : "text-white/60 hover:text-white",
@@ -150,6 +173,32 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
                 </button>
               );
             })}
+          </div>
+          <span
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-y-px left-px w-10 rounded-l-full bg-gradient-to-r from-char to-transparent transition-opacity",
+              edges.left ? "opacity-100" : "opacity-0",
+            )}
+          />
+          <span
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-y-px right-px w-16 rounded-r-full bg-gradient-to-l from-char via-char/90 to-transparent transition-opacity",
+              edges.right ? "opacity-100" : "opacity-0",
+            )}
+          />
+          {edges.right ? (
+            <button
+              type="button"
+              tabIndex={-1}
+              aria-label="More menu categories"
+              onClick={() => scrollerRef.current?.scrollBy({ left: 180, behavior: reduce ? "auto" : "smooth" })}
+              className="absolute right-2 top-1/2 grid size-8 -translate-y-1/2 cursor-pointer place-items-center rounded-full bg-white/10 text-white motion-safe:animate-pulse"
+            >
+              <ChevronRight className="size-4" aria-hidden strokeWidth={2.75} />
+            </button>
+          ) : null}
           </div>
         </div>
       ) : null}

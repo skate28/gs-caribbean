@@ -34,7 +34,7 @@ export function HeroPhotos({ images }: { images: SiteImage[] }) {
           fill
           priority={index === 0}
           sizes="(min-width: 1280px) 600px, (min-width: 1024px) 46vw, (min-width: 640px) 576px, 92vw"
-          className="kenburns object-cover object-[58%_50%]"
+          className="kenburns object-cover object-[58%_50%] brightness-[1.08] contrast-[1.08] saturate-[1.2]"
         />
       </motion.div>
     </AnimatePresence>

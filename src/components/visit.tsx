@@ -20,7 +20,7 @@ export function Visit() {
   const rows = showHours ? scheduleRows(site.hours) : [];
   const summary = site.hours.summary.trim();
   const delivery = deliveryNote(site);
-  const extras = [site.priceRange.trim(), site.paymentNote.trim()].filter(Boolean);
+  const extras = [site.priceRange.trim() ? `Price range: ${site.priceRange.trim()}` : "", site.paymentNote.trim()].filter(Boolean);
   const [streetLine, ...restLine] = full.split(",");
 
   return (

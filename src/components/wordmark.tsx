@@ -37,14 +37,14 @@ export function Wordmark({ className, tone = "light", size = "md" }: { className
           alt={logo.alt}
           width={logo.width ?? 800}
           height={logo.height ?? 800}
-          sizes={size === "lg" ? "96px" : "56px"}
+          sizes={size === "lg" ? "112px" : "56px"}
+          quality={90}
           className={cn(
             "shrink-0 rounded-full object-contain shadow-[0_6px_18px_-6px_rgb(0_0_0/0.7)] ring-2 ring-white/10",
-            size === "lg" ? "size-20 sm:size-24" : "size-11 sm:size-12",
+            size === "lg" ? "size-24 sm:size-28" : "size-12 sm:size-14",
           )}
           priority={size !== "lg"}
         />
-        {text}
       </span>
     );
   }

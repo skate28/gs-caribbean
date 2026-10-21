@@ -170,7 +170,8 @@ export function Hero() {
               {hasPhotos ? (
                 <>
                   <HeroPhotos images={photos} />
-                  <div aria-hidden className="absolute inset-0 bg-gradient-to-tr from-red/35 via-transparent to-gold/25 mix-blend-soft-light" />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-tr from-red/40 via-sunset/10 to-gold/35 mix-blend-soft-light" />
+                  <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,rgb(255_200_120/0.22),transparent_60%)] mix-blend-screen" />
                   <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/5 to-transparent" />
                 </>
               ) : (
@@ -185,6 +186,7 @@ export function Hero() {
                   width={logoImage.width ?? 800}
                   height={logoImage.height ?? 800}
                   sizes="160px"
+                  quality={90}
                   className="size-full rounded-full object-contain ring-2 ring-gold/70"
                 />
               </div>

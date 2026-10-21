@@ -15,12 +15,13 @@ export function heroImages(content: SiteContent): SiteImage[] {
   return (content.heroImages ?? []).filter(validImage).filter((img) => !isMenuBoard(img)).slice(0, 3);
 }
 
-/** Gallery photos minus menu boards and the photo already shown in About. */
+/** Gallery photos minus menu boards, the primary hero photo, and the photo already shown in About. */
 export function galleryImages(content: SiteContent): SiteImage[] {
   const aboutSrc = validImage(content.about?.image) ? content.about.image.src : null;
+  const heroSrc = heroImages(content)[0]?.src ?? null;
   const seen = new Set<string>();
   return (content.gallery ?? []).filter(validImage).filter((img) => {
-    if (isMenuBoard(img) || img.src === aboutSrc || seen.has(img.src)) return false;
+    if (isMenuBoard(img) || img.src === aboutSrc || img.src === heroSrc || seen.has(img.src)) return false;
     seen.add(img.src);
     return true;
   });
@@ -55,4 +56,13 @@ export function sections(content: SiteContent) {
     hours: hoursConfirmed(content.hours),
     visit: Boolean(content.address.full.trim()),
   };
+}
+
+/** Short label for a photo: `caption`, else the start of `alt` (before a comma, dash or "with"), max 4 words. */
+export function shortCaption(image: SiteImage): string {
+  const explicit = image.caption?.trim();
+  if (explicit) return explicit;
+  const head = image.alt.split(/,|\s[–—-]\s|\s(?:with|next to|topped|beside|in a|on a)\s/i)[0]?.trim() ?? "";
+  const words = head.split(/\s+/).filter(Boolean).slice(0, 4).join(" ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
 }

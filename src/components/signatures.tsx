@@ -10,10 +10,10 @@ import { SectionHeading } from "./section-heading";
 import { container } from "./styles";
 
 const THEMES = [
-  { card: "bg-red text-white", glow: "from-sunset/70", num: "text-white/25", sub: "text-white/80" },
-  { card: "bg-blue text-white", glow: "from-[#3b6bff]/60", num: "text-white/25", sub: "text-white/80" },
-  { card: "bg-gold text-ink", glow: "from-white/60", num: "text-ink/20", sub: "text-ink/75" },
-  { card: "bg-ink text-white", glow: "from-red/50", num: "text-white/20", sub: "text-white/75" },
+  { card: "bg-red text-white", glow: "from-red-deep/80", num: "text-white/[0.12]", sub: "text-white" },
+  { card: "bg-blue text-white", glow: "from-[#3b6bff]/60", num: "text-white/[0.12]", sub: "text-white" },
+  { card: "bg-gold text-ink", glow: "from-white/60", num: "text-ink/[0.12]", sub: "text-ink" },
+  { card: "bg-ink text-white", glow: "from-red/50", num: "text-white/[0.12]", sub: "text-white/85" },
 ];
 
 export function Signatures() {
@@ -48,9 +48,9 @@ export function Signatures() {
                         alt={photo.alt}
                         fill
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover transition duration-700 group-hover:scale-105"
+                        className="object-cover brightness-[1.06] contrast-[1.06] saturate-[1.15] transition duration-700 group-hover:scale-105"
                       />
-                      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-transparent" />
+                      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/0" />
                     </>
                   ) : (
                     <div
@@ -61,15 +61,14 @@ export function Signatures() {
                       )}
                     />
                   )}
-                  <span
-                    aria-hidden
-                    className={cn(
-                      "absolute right-6 top-4 font-display text-[6.5rem] font-extrabold leading-none tracking-tighter",
-                      photo ? "text-white/30" : theme.num,
-                    )}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                  {photo ? null : (
+                    <span
+                      aria-hidden
+                      className={cn("absolute right-6 top-4 font-display text-[6.5rem] font-extrabold leading-none tracking-tighter", theme.num)}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  )}
                   <div className={cn("relative", photo && "text-white")}>
                     <p className={cn("text-xs font-extrabold uppercase tracking-[0.28em]", photo ? "text-gold" : theme.sub)}>
                       {dish.category}
@@ -78,7 +77,7 @@ export function Signatures() {
                       {dish.name}
                     </h3>
                     {dish.description?.trim() ? (
-                      <p className={cn("mt-3 text-base font-medium leading-snug", photo ? "text-white/80" : theme.sub)}>
+                      <p className={cn("mt-3 text-base font-medium leading-snug", photo ? "text-white" : theme.sub)}>
                         {dish.description}
                       </p>
                     ) : null}

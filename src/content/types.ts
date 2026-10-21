@@ -23,6 +23,8 @@ export type SiteImage = {
   src: string;
   /** Describes what is in the picture, e.g. "Griot with pikliz and fried plantains". */
   alt: string;
+  /** Short on-photo label, e.g. "Griot plate". Absent = derived from the start of `alt`. */
+  caption?: string;
   /** Intrinsic pixel size, when known. Helps layout; optional. */
   width?: number;
   height?: number;

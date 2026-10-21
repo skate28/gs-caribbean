@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
-import { galleryImages } from "@/lib/content";
+import { galleryImages, shortCaption } from "@/lib/content";
 
 import { Reveal } from "./reveal";
 import { SectionHeading } from "./section-heading";
@@ -29,7 +29,7 @@ export function Gallery() {
         className="absolute -right-32 bottom-0 -z-10 size-[34rem] rounded-full bg-[radial-gradient(closest-side,rgb(255_106_31/0.3),transparent)] blur-2xl"
       />
       <div className={container}>
-        <SectionHeading id="photos-title" tone="light" eyebrow="From the kitchen" title="Made fresh," accent="served big." />
+        <SectionHeading id="photos-title" tone="light" eyebrow="From the kitchen" title="Plated" accent="generous." />
         <ul className="mt-12 grid auto-rows-[10.5rem] grid-cols-2 gap-3 sm:mt-16 sm:auto-rows-[14rem] sm:gap-4 lg:auto-rows-[16rem] lg:grid-cols-3">
           {images.map((img, i) => (
             <Reveal
@@ -44,17 +44,18 @@ export function Gallery() {
                   alt={img.alt}
                   fill
                   sizes={i === 0 ? "(min-width: 1024px) 66vw, 100vw" : "(min-width: 1024px) 33vw, 50vw"}
-                  className="object-cover transition duration-[1.2s] ease-out group-hover:scale-[1.06]"
+                  className="object-cover brightness-[1.06] contrast-[1.06] saturate-[1.15] transition duration-[1.2s] ease-out group-hover:scale-[1.06]"
                 />
                 <div aria-hidden className="absolute inset-0 bg-gradient-to-tr from-red/30 via-transparent to-gold/20 mix-blend-soft-light" />
-                <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent opacity-90 transition duration-500 group-hover:opacity-100" />
+                <div aria-hidden className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-ink via-ink/60 to-transparent" />
                 <figcaption
                   className={cn(
-                    "absolute inset-x-0 bottom-0 p-4 text-sm font-semibold leading-snug text-white/90 sm:p-6",
-                    i === 0 ? "sm:text-lg" : "hidden sm:block",
+                    "absolute bottom-0 left-0 p-4 font-display font-extrabold leading-tight tracking-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.6)] sm:p-6",
+                    i === 0 ? "text-xl sm:text-3xl" : "text-lg sm:text-2xl",
                   )}
                 >
-                  {img.alt}
+                  <span aria-hidden className="mb-2 block h-1 w-8 rounded-full bg-red" />
+                  {shortCaption(img)}
                 </figcaption>
               </figure>
             </Reveal>

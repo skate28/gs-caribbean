@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Skip to content
         </a>
-        <Header links={links} phone={{ display: site.phone.display, tel: site.phone.tel }} wordmark={<Wordmark />} />
+        <Header links={links} phone={{ display: site.phone.display, tel: site.phone.tel }} wordmark={<Wordmark />} siteName={site.name} />
         {children}
         <Footer links={links} />
         <MobileBar />
