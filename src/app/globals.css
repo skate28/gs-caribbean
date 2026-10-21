@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/*
+  GS palette: menu-board red on charcoal and white, with Haitian blue and gold accents
+  and a sunset orange from the sign. Green appears only in small touches.
+*/
+:root {
+  --gs-ink: #151517;
+  --gs-char: #1d1d21;
+  --gs-char-2: #2a2a2f;
+  --gs-red: #e1262d;
+  --gs-red-deep: #a8141b;
+  --gs-blue: #1239b5;
+  --gs-blue-deep: #0a1f6b;
+  --gs-gold: #f6b81c;
+  --gs-sunset: #ff6a1f;
+  --gs-palm: #1f8a55;
+  --gs-cream: #fbf6ef;
+  --gs-paper: #ffffff;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ink: var(--gs-ink);
+  --color-char: var(--gs-char);
+  --color-char-2: var(--gs-char-2);
+  --color-red: var(--gs-red);
+  --color-red-deep: var(--gs-red-deep);
+  --color-blue: var(--gs-blue);
+  --color-blue-deep: var(--gs-blue-deep);
+  --color-gold: var(--gs-gold);
+  --color-sunset: var(--gs-sunset);
+  --color-palm: var(--gs-palm);
+  --color-cream: var(--gs-cream);
+  --color-paper: var(--gs-paper);
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), "Arial Black", Impact, sans-serif;
+  --font-serif: var(--font-serif-face), Georgia, serif;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-rays: spin 120s linear infinite;
+  --animate-sway: sway 7s ease-in-out infinite;
+  --animate-glow: glow 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background: var(--gs-ink);
+}
+
+body {
+  background-color: var(--gs-cream);
+  color: var(--gs-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--gs-red);
+  color: #fff;
+}
+
+/* Woven pattern used on dark panels. */
+.bg-weave {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.07) 1px, transparent 0),
+    linear-gradient(135deg, rgb(255 255 255 / 0.025) 25%, transparent 25%, transparent 50%, rgb(255 255 255 / 0.025) 50%, rgb(255 255 255 / 0.025) 75%, transparent 75%);
+  background-size: 22px 22px, 44px 44px;
+}
+
+/* Gold diamond lattice for blue panels. */
+.bg-lattice {
+  background-image:
+    linear-gradient(45deg, rgb(246 184 28 / 0.09) 1px, transparent 1px),
+    linear-gradient(-45deg, rgb(246 184 28 / 0.09) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+
+.leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted currentColor;
+  opacity: 0.28;
+  transform: translateY(-0.3em);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.kenburns {
+  animation: kenburns 9s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
