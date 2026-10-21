@@ -36,7 +36,7 @@ export function Gallery() {
               as="li"
               key={img.src}
               delay={(i % 3) * 0.08}
-              className={cn("group relative overflow-hidden rounded-[1.75rem] bg-char", tileClass(i, images.length))}
+              className={cn("group relative overflow-hidden rounded-[1.75rem] bg-char ring-1 ring-white/15", tileClass(i, images.length))}
             >
               <figure className="absolute inset-0 m-0">
                 <Image
