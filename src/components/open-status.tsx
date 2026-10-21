@@ -53,3 +53,19 @@ export function OpenStatus({
     </span>
   );
 }
+
+/** The closed notice from content, shown only while the clock says closed. */
+export function ClosedNotice({ input, className }: { input: ShopClockInput; className?: string }) {
+  const [closed, setClosed] = useState(false);
+
+  useEffect(() => {
+    const tick = () => setClosed(statusLabel(new Date(), input).tone === "closed");
+    tick();
+    const id = window.setInterval(tick, 60_000);
+    return () => window.clearInterval(id);
+  }, [input]);
+
+  const notice = input.closedNotice.trim();
+  if (!closed || !notice) return null;
+  return <p className={className}>{notice}</p>;
+}

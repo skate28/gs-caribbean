@@ -6,7 +6,7 @@ import { hoursConfirmed, scheduleRows } from "@/lib/hours";
 import { directionsHref, mapEmbedSrc } from "@/lib/maps";
 import { deliveryNote } from "@/lib/ordering";
 
-import { OpenStatus } from "./open-status";
+import { ClosedNotice, OpenStatus } from "./open-status";
 import { Reveal } from "./reveal";
 import { SectionHeading } from "./section-heading";
 import { buttonInk, buttonRed, container } from "./styles";
@@ -87,6 +87,10 @@ export function Visit() {
                 ) : (
                   <p className="mt-5 font-display text-xl font-bold">{summary}</p>
                 )}
+                <ClosedNotice
+                  input={{ hours: site.hours, closedNotice: site.closedNotice, phone: site.phone }}
+                  className="mt-5 rounded-2xl bg-red/5 p-4 text-sm font-medium text-ink/75"
+                />
               </Reveal>
             ) : null}
           </div>
