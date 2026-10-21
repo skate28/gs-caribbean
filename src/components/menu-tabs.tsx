@@ -136,7 +136,7 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
             aria-label="Menu categories"
             onKeyDown={onKey}
             onScroll={updateEdges}
-            className="no-scrollbar flex gap-1 overflow-x-auto scroll-smooth rounded-full border border-white/10 bg-char p-1.5 motion-reduce:scroll-auto sm:inline-flex sm:max-w-full"
+            className="no-scrollbar flex gap-1 overflow-x-auto scroll-smooth rounded-full border border-white/10 bg-char p-1.5 pr-12 motion-reduce:scroll-auto sm:inline-flex sm:max-w-full sm:pr-1.5"
           >
             {categories.map((c, i) => {
               const selected = i === active;
