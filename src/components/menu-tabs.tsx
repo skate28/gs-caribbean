@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useId, useRef, useState } from "react";
 
 import type { MenuItem } from "@/content/types";
@@ -91,7 +91,7 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
   const reduce = useReducedMotion();
   const base = useId();
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const category = categories[Math.min(active, categories.length - 1)];
+  const current = Math.min(active, categories.length - 1);
 
   const select = (i: number) => {
     setActive(i);
@@ -130,7 +130,7 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
                   type="button"
                   id={`${base}-tab-${i}`}
                   aria-selected={selected}
-                  aria-controls={`${base}-panel`}
+                  aria-controls={`${base}-panel-${i}`}
                   tabIndex={selected ? 0 : -1}
                   onClick={() => setActive(i)}
                   className={cn(
@@ -154,59 +154,59 @@ export function MenuTabs({ categories }: { categories: CleanCategory[] }) {
         </div>
       ) : null}
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={category.id || category.name}
-          id={`${base}-panel`}
-          role={categories.length > 1 ? "tabpanel" : undefined}
-          aria-labelledby={categories.length > 1 ? `${base}-tab-${active}` : undefined}
-          initial={reduce ? false : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduce ? undefined : { opacity: 0, y: -8 }}
-          transition={{ duration: reduce ? 0 : 0.3, ease: "easeOut" }}
-          className="mt-10"
-        >
-          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/15 pb-5">
-            <div>
-              <h3 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-white sm:text-5xl">{category.name}</h3>
-              {category.description?.trim() ? (
-                <p className="mt-2 max-w-2xl text-base text-white/65">{category.description}</p>
+      {categories.map((category, index) => (
+          <motion.div
+            key={category.id || category.name}
+            id={`${base}-panel-${index}`}
+            role={categories.length > 1 ? "tabpanel" : undefined}
+            aria-labelledby={categories.length > 1 ? `${base}-tab-${index}` : undefined}
+            hidden={index !== current}
+            initial={false}
+            animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+            transition={{ duration: reduce ? 0 : 0.35, ease: "easeOut" }}
+            className="mt-10"
+          >
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/15 pb-5">
+              <div>
+                <h3 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-white sm:text-5xl">{category.name}</h3>
+                {category.description?.trim() ? (
+                  <p className="mt-2 max-w-2xl text-base text-white/65">{category.description}</p>
+                ) : null}
+              </div>
+              {category.note?.trim() ? (
+                <p className="rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-sm font-bold text-gold">{category.note}</p>
               ) : null}
             </div>
-            {category.note?.trim() ? (
-              <p className="rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-sm font-bold text-gold">{category.note}</p>
+
+            {category.items.length > 0 ? (
+              <div className="mt-2">
+                <ItemList items={category.items} />
+              </div>
             ) : null}
-          </div>
 
-          {category.items.length > 0 ? (
-            <div className="mt-2">
-              <ItemList items={category.items} />
-            </div>
-          ) : null}
-
-          {category.groups.length > 0 ? (
-            <div className={cn("grid gap-5", category.items.length > 0 ? "mt-10" : "mt-8", category.groups.length > 1 && "md:grid-cols-2 xl:grid-cols-3")}>
-              {category.groups.map((group) => (
-                <section
-                  key={group.label}
-                  className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-char p-6 sm:p-7"
-                >
-                  <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue via-red to-gold" />
-                  <h4 className="font-display text-2xl font-extrabold tracking-tight text-white">{group.label}</h4>
-                  {group.note?.trim() ? (
-                    <p className="mt-1 text-sm font-bold uppercase tracking-[0.14em] text-gold">{group.note}</p>
-                  ) : null}
-                  <ul className="mt-3 divide-y divide-white/10">
-                    {group.items.map((item) => (
-                      <ItemRow key={item.id || item.name} item={item} />
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-          ) : null}
-        </motion.div>
-      </AnimatePresence>
+            {category.groups.length > 0 ? (
+              <div className={cn("grid gap-5", category.items.length > 0 ? "mt-10" : "mt-8", category.groups.length > 1 && "md:grid-cols-2 xl:grid-cols-3")}>
+                {category.groups.map((group) => (
+                  <section
+                    key={group.label}
+                    className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-char p-6 sm:p-7"
+                  >
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue via-red to-gold" />
+                    <h4 className="font-display text-2xl font-extrabold tracking-tight text-white">{group.label}</h4>
+                    {group.note?.trim() ? (
+                      <p className="mt-1 text-sm font-bold uppercase tracking-[0.14em] text-gold">{group.note}</p>
+                    ) : null}
+                    <ul className="mt-3 divide-y divide-white/10">
+                      {group.items.map((item) => (
+                        <ItemRow key={item.id || item.name} item={item} />
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            ) : null}
+          </motion.div>
+      ))}
     </div>
   );
 }
