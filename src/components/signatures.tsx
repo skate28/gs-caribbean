@@ -70,7 +70,12 @@ export function Signatures() {
                     </span>
                   )}
                   <div className={cn("relative", photo && "text-white")}>
-                    <p className={cn("text-xs font-extrabold uppercase tracking-[0.28em]", photo ? "text-gold" : theme.sub)}>
+                    <p
+                      className={cn(
+                        "text-xs font-extrabold uppercase tracking-[0.28em]",
+                        photo ? "inline-block rounded-full bg-ink/85 px-3 py-1.5 text-gold backdrop-blur-sm" : theme.sub,
+                      )}
+                    >
                       {dish.category}
                     </p>
                     <h3 className="mt-3 font-display text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] sm:text-[2.6rem]">
