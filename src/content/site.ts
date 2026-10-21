@@ -124,7 +124,7 @@ export const site: SiteContent = {
         { id: "side-diri-sos-pwa", name: "Side Diri + Sos Pwa", description: "Rice + bean sauce.", price: 12.5 },
         { id: "side-banana", name: "Side Banana 5 PCS", description: "Five pieces of plantain.", price: 3.5 },
         { id: "boulette", name: "Boulette", description: "Meat ball.", price: 20 },
-        { id: "kalalou-platter", name: "Kalalou Platter", description: "Okra. Haitian okra stew.", price: 21.5 },
+        { id: "kalalou-platter", name: "Kalalou Platter", description: "Haitian okra stew.", price: 21.5 },
         { id: "lalo-platter", name: "Lalo Platter", description: "Haitian jute-leaf stew, with diri blan or diri kole.", price: 22 },
         { id: "side-acra", name: "Side Acra", description: "Crispy Haitian fritters.", price: 6.21 },
         { id: "ragout", name: "Ragout", description: "Haitian-style stew.", price: 18.99 },
